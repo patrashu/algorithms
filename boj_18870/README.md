@@ -2,7 +2,7 @@
 
 ### https://www.acmicpc.net/problem/18870
 
-Algorithm: Set, Dict
+Algorithm: Set, Dict, sort
 
 
 ``` python
