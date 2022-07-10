@@ -46,7 +46,6 @@ if __name__ == '__main__':
 ```
 
 ### Success Code  
-
 ```python
 import sys
 # sys.stdin = open('input.txt','rt')
