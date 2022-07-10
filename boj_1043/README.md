@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
 ```python
 import sys
-# sys.stdin = open('input.txt','rt')
+sys.stdin = open('input.txt','rt')
 input = sys.stdin.readline
 
 if __name__ == '__main__':

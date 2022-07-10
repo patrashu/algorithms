@@ -20,7 +20,6 @@ if __name__ == '__main__':
             if known & p:
                 cnt[i] = 0
                 known.update(p)
-    
     print(sum(cnt))
     
 if __name__ == '__main__':
