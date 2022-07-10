@@ -15,7 +15,6 @@ if __name__ == '__main__':
             parties.append(party)
             cnt.append(1)
     
-    
     for _ in range(m):
         for i, p in enumerate(parties):
             if known & p:
@@ -24,7 +23,6 @@ if __name__ == '__main__':
     
     print(sum(cnt))
     
-        
 if __name__ == '__main__':
     n, m = map(int, input().split())
     known = list(map(int, input().split()))[1:]
