@@ -1,4 +1,4 @@
-##  BOJ 1991 (G4)
+##  BOJ 10830 (G4)
 
 ### https://www.acmicpc.net/problem/10830
 ### Algorithm: Div and Conquer
