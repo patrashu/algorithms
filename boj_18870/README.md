@@ -1,8 +1,7 @@
 ##  BOJ 18870 (S2)
 
 ### https://www.acmicpc.net/problem/18870
-
-Algorithm: Set, Dict, sort
+### Algorithm: Set, Dict, sort
 
 
 ``` python

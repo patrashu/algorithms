@@ -1,8 +1,7 @@
 ##  BOJ 1780 (S2)
 
 ### https://www.acmicpc.net/problem/1780
-
-Algorithm: Divide and Conquer
+### Algorithm: Divide and Conquer
 
 
 ``` python
