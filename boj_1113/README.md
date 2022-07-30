@@ -1,4 +1,4 @@
-##  BOJ 1780 (G1)
+##  BOJ 1113 (G1)
 
 ### https://www.acmicpc.net/problem/1113
 ### Algorithm: DFS, BFS, Simulation
