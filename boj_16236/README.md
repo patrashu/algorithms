@@ -1,4 +1,4 @@
-##  BOJ 16236 (G4)
+##  BOJ 16236 (G3)
 
 ### https://www.acmicpc.net/problem/16236
 ### Algorithm: Simulation, Implement, BFS
