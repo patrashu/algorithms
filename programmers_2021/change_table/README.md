@@ -1,4 +1,4 @@
-### 프로그래머스 2021 카카오 '표 편집'
+### 프로그래머스 2021 카카오 '표 편집' (레벨 3)
 
 ### https://school.programmers.co.kr/learn/courses/30/lessons/81303
 
@@ -80,9 +80,63 @@ def solution(n, k, cmd):
 
 ```
 
-- Set 사용
+- dict 사용
 
-```
+```python
+from collections import deque
 
+def solution(n, k, cmd):
+
+    up = dict()
+    down = dict()
+    del_list = deque()
+
+    for a in range(n):
+        up[a] = a-1
+        down[a] = a+1
+
+
+    for line in cmd:
+        if len(line) > 1:
+            line = line.split(' ')
+            if line[0] == 'U':
+                for _ in range(int(line[1])):
+                    k = up[k]
+            else:
+                for _ in range(int(line[1])):
+                    k = down[k]
+
+        else:
+            if line[0] == 'C':
+                cur_d = down.pop(k)
+                cur_u = up.pop(k)
+
+                down[cur_u] = cur_d
+                up[cur_d] = cur_u
+
+                del_list.append([cur_u, k, cur_d])
+
+                if cur_d == n:
+                    k = cur_u
+                else:
+                    k = cur_d
+
+            else:
+                add_u, idx, add_d = del_list.pop()
+
+                down[add_u] = idx
+                down[idx] = add_d
+                up[add_d] = idx
+                up[idx] = add_u
+
+
+    ans = []
+    for i in range(n):
+        if i in down:
+            ans.append('O')
+        else:
+            ans.append('X')
+
+    return ''.join(ans)
 
 ```
