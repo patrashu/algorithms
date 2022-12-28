@@ -1,5 +1,7 @@
 import sys
 
+sys.setrecursionlimit(10**6)
+
 sys.stdin = open("input.txt", "rt")
 input = sys.stdin.readline
 
@@ -27,10 +29,13 @@ def dfs(x, y, tmp):
 
 
 def check(x):
-  global flag
+  global flag, total_cnt
   for i in range(n + 2):
     for j in range(m + 2):
       if graph[i][j] <= x and not visited[i][j]:
+        if i != 0 and j != 0:
+          total_cnt += 1
+
         visited[i][j] = 1
         flag = True
         dfs(i, j, x)
@@ -51,7 +56,5 @@ if __name__ == '__main__':
   for i in range(1, 10):
     visited = [[0] * (m + 2) for _ in range(n + 2)]
     check(i)
-    if flag:
-      total_cnt += 1
 
   print(total_cnt)
