@@ -4,7 +4,7 @@
 ### Algorithm: Resursion, DFS, Simulation
 #### Trial: 2 (By Python Recursive Error)
 
-### Code 1 (2312ms)
+### Code 1 (2312ms) (DFS)
 ```python
 import sys
 # sys.stdin = open('input.txt', 'rt')
@@ -110,57 +110,115 @@ if __name__ == '__main__':
 
 ```
 
-### Code 2 (992ms)
+### Code 2 (812ms) (DFS)
 ```python
 import sys
-# sys.stdin = open('input.txt', 'rt')
-sys.setrecursionlimit(10**6)
+
+sys.setrecursionlimit(10**5)
 input = sys.stdin.readline
+
+dx = [0, 1, 0, -1]
+dy = [-1, 0, 1, 0]
 
 
 def dfs(x, y):
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
 
-        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny]:
-            if a[nx][ny] != 0:
-                a[nx][ny] += 1
-            else:
-                visited[nx][ny] = 1
-                dfs(nx, ny)
-
+    if 0 <= nx < n and 0 <= ny < m and visited[nx][ny] == 0:
+      if graph[nx][ny] >= 1:
+        graph[nx][ny] += 1
+      else:
+        visited[nx][ny] = 1
+        dfs(nx, ny)
 
 
 if __name__ == '__main__':
-    n, m = map(int, input().split())
-    a = []
+  ## 입력
+  n, m = map(int, input().split())
+  graph = [list(map(int, input().split())) for _ in range(n)]
+  time = 0
 
-    cnt_cheeze = 0 
+  ## 탐색 시작
+  while True:
+    visited = [[0] * m for _ in range(n)]
+    visited[0][0] = 1
+    dfs(0, 0)
+    flag = 0
+
+    ## 두 면 이상 접해있는 경우
     for i in range(n):
-        a.append(list(map(int, input().split())))
-        cnt_cheeze += sum(a[i])
+      for j in range(m):
+        if graph[i][j] >= 3:
+          graph[i][j] = 0
+          flag = 1
+        elif graph[i][j] == 2:
+          graph[i][j] = 1
+    
+    ## 두 면 이상 접한 치즈가 1개 이상인 경우 
+    if flag:
+      time += 1
+    else:
+      break
 
-    cnt = 0
+  print(time)
 
-    dx = [0, 1, 0, -1]
-    dy = [-1, 0, 1, 0]
+```
 
-    while cnt_cheeze != 0:
-        visited = [[0]*m for _ in range(n)]
-        dfs(0, 0)
+### Code 3(BFS)(236ms)
 
-        for i in range(n):
-            for j in range(m):
-                if a[i][j] >= 3:
-                    a[i][j] = 0
-                    cnt_cheeze -= 1
-                elif a[i][j] > 0:
-                    a[i][j] = 1
+```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
-        cnt += 1
+dx = [0, 1, 0, -1]
+dy = [-1, 0, 1, 0]
 
-    print(cnt)
+
+def bfs():
+  q = deque()
+  q.append((0, 0))
+  visited[0][0] = 1
+  while q:
+    x, y = q.popleft()
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      if 0 <= nx < n and 0 <= ny < m and visited[nx][ny] == 0:
+        if graph[nx][ny] >= 1:
+          graph[nx][ny] += 1
+        else:
+          visited[nx][ny] = 1
+          q.append((nx, ny))
+
+
+if __name__ == '__main__':
+  n, m = map(int, input().split())
+  graph = [list(map(int, input().split())) for _ in range(n)]
+
+  time = 0
+  while True:
+    visited = [[0] * m for _ in range(n)]
+    bfs()
+    flag = 0
+
+    for i in range(n):
+      for j in range(m):
+        if graph[i][j] >= 3:
+          graph[i][j] = 0
+          flag = 1
+        elif graph[i][j] == 2:
+          graph[i][j] = 1
+          
+    if flag == 1:
+      time += 1
+    else:
+      break
+
+  print(time)
 
 
 ```
