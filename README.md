@@ -1,6 +1,5 @@
 ## BOJ with Python
 
 ## Solved.ac
-ID: qhdrmfdl12
-
+ID: zeroone_012
 
