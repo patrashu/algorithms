@@ -4,7 +4,7 @@
 ### Algorithm: Simulation, BruteForce, DFS
 
 
-### 통과한 code (BruteForce)
+### BruteForce
 ```python
 import sys
 sys.stdin = open("input.txt", "rt")
@@ -114,11 +114,20 @@ if __name__ == '__main__':
   print(max_value)
 ```
 
-### 통과 못한 code
+### (BruteForce) (rotate, flip)
 ``` python
 import sys
 sys.stdin = open("input.txt", "rt")
 input = sys.stdin.readline
+
+def flip(n, m, field):
+  new_field = [[0]*m for _ in range(n)]
+
+  for i in range(n):
+    for j in range(m):
+      new_field[i][j] = field[n-i-1][j]
+
+  return new_field
 
 def rotate_map(n, m, field):
   new_field = [[0]*n for _ in range(m)]
@@ -157,6 +166,13 @@ if __name__ == '__main__':
   ]
   ans = 0
   
+  for i in range(4):
+    tmp_r, tmp_c = len(field), len(field[0])
+    ans = max(ans, cal_max(tmp_r, tmp_c, field, tets))
+    field = rotate_map(tmp_r, tmp_c, field)
+
+  field = flip(n, m, field)
+
   for i in range(4):
     tmp_r, tmp_c = len(field), len(field[0])
     ans = max(ans, cal_max(tmp_r, tmp_c, field, tets))
