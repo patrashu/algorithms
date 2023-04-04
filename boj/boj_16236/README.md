@@ -20,7 +20,6 @@ def bfs(x, y, size):
     dist = [[0]*n for _ in range(n)]
     visited = [[0]*n for _ in range(n)]
 
-    # 
     q = deque()
     q.append((x, y))
     visited[x][y] = 1
@@ -86,6 +85,65 @@ if __name__ == '__main__':
 
     print(res)
 ```
-- 문제 조건 잘 파악하기 (먹이)
-- 말 그대로 구현만 하면 되는 문제
-- lambda 사용법을 알아야 쉽게 해결이 됨
+
+``` python
+import sys
+import copy
+from collections import deque
+sys.stdin = open("input.txt", "rt")
+input = sys.stdin.readline
+
+
+if __name__ == '__main__':
+    n = int(input())
+    shark, grow = 2, 2
+    sx, sy = None, None
+    field = []
+    q = deque()
+
+    for i in range(n):
+        tmp = list(map(int, input().split()))
+        if 9 in tmp:
+            sx, sy = i, tmp.index(9)
+        field.append(tmp)
+
+    shark, level = 2, 2
+    cnt = 0
+    dx = [1, 0, -1, 0]
+    dy = [0, 1, 0, -1]
+    q.append((0, sx, sy))
+
+    while True:
+        feeds = []
+        visited = [[0] * n for _ in range(n)]
+        visited[q[0][1]][q[0][2]] = 1
+        while q:
+            dist, cx, cy = q.popleft()
+
+            for i in range(4):
+                nx = cx + dx[i]
+                ny = cy + dy[i]
+                # 범위 밖이면
+                if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]:
+                    if field[nx][ny] <= shark:
+                        q.append((dist+1, nx, ny))
+                        visited[nx][ny] = 1
+
+                        if 0 < field[nx][ny] < shark:
+                            feeds.append((dist+1, nx, ny))
+
+        if len(feeds) == 0:
+            break
+        else:
+            feeds = sorted(feeds, key=lambda x: (x[0], x[1], x[2]))
+            field[sx][sy] = 0
+            field[feeds[0][1]][feeds[0][2]] = 0
+            q.append((0, feeds[0][1], feeds[0][2]))
+            cnt += feeds[0][0]
+            level -= 1
+            if level == 0:
+                shark += 1
+                level = shark
+
+    print(cnt)
+```

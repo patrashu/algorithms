@@ -6,73 +6,93 @@
 ```python
 import sys
 import copy
-sys.stdin = open('input.txt', 'rt')
 input = sys.stdin.readline
-def diffuse(j, k, div_dist):
-    cnt = 0
-    for i in range(4):
-        nx = j + dx[i]
-        ny = k + dy[i]
-        if 0 <= nx < n and 0 <= ny < m and a[nx][ny] != -1:
-            copy_a[nx][ny] += div_dist
-            cnt += 1
-    copy_a[j][k] -= cnt*div_dist
-def up_rotate():
-    dx = [0, -1, 0, 1]
-    dy = [1, 0, -1, 0]
-    up_x, up_y = air_fresh[0][0], 1
-    direct = 0
-    before = 0
-    while direct < 4:
-        nx = up_x + dx[direct]
-        ny = up_y + dy[direct]
-        if up_x == air_fresh[0][0] and up_y == 0:
-            break
-        if nx < 0 or nx >= n or ny < 0 or ny >= m:
-            direct += 1
+
+def wind(n_field, airs):
+    up = airs[0]
+    down = airs[1]
+
+    corner = 0
+    ndx = [0, -1, 0, 1]
+    ndy = [-1, 0, 1, 0]
+    cx, cy = up
+
+    while True:
+        idx = corner%4
+        nx, ny = cx + ndx[idx], cy + ndy[idx]
+        if nx < 0 or nx > up[0] or ny < 0 or ny >= c:
+            corner += 1
             continue
-        a[up_x][up_y], before = before, a[up_x][up_y]
-        up_x = nx
-        up_y = ny
-def down_rotate():
-    dx = [0, 1, 0, -1]
-    dy = [1, 0, -1, 0]
-    down_x, down_y = air_fresh[1][0], 1
-    direct = 0
-    before = 0
-    while direct < 4:
-        nx = down_x + dx[direct]
-        ny = down_y + dy[direct]
-        if down_x == air_fresh[1][0] and down_y == 0:
+        if (nx, ny) == up:
             break
-        if nx < 0 or nx >= n or ny < 0 or ny >= m:
-            direct += 1
+
+        n_field[cx][cy] = n_field[nx][ny]
+        cx, cy = nx, ny
+
+    corner = 0
+    ndx = [0, 1, 0, -1]
+    ndy = [-1, 0, 1, 0]
+    cx, cy = down
+
+    while True:
+        idx = corner%4
+        nx, ny = cx + ndx[idx], cy + ndy[idx]
+        if nx < down[0] or nx >= r or ny < 0 or ny >= c:
+            corner += 1
             continue
-        a[down_x][down_y], before = before, a[down_x][down_y]
-        down_x = nx
-        down_y = ny
+        if (nx, ny) == down:
+            break
+
+        n_field[cx][cy] = n_field[nx][ny]
+        cx, cy = nx, ny
+
+    n_field[up[0]][up[1]] = -1
+    n_field[down[0]][down[1]] = -1
+    if up[1] < c-1:
+        n_field[up[0]][up[1]+1] = 0
+    if down[1] < c-1:
+        n_field[down[0]][down[1] + 1] = 0
+
+    return n_field
+
+
 if __name__ == '__main__':
-    n, m, t = map(int, input().split())
-    a = [list(map(int, input().split())) for _ in range(n)]
-    i, dist = 0, 0
-    dx = [0, -1, 0, 1]
-    dy = [-1, 0, 1, 0]
-    air_fresh = []
-    while i < t:
-        copy_a = copy.deepcopy(a)
-        ## Diffuse
-        for j in range(n):
-            for k in range(m):
-                if a[j][k] == -1:
-                    air_fresh.append((j, k))
-                if a[j][k] > 4:
-                    div_dist = a[j][k] // 5
-                    diffuse(j, k, div_dist)
-        a = copy_a
-        i += 1
-        up_rotate()
-        down_rotate()
-    for num in a:
-        dist += sum(num)
-    print(dist+2)
+    r, c, t = map(int, input().split())
+    field = []
+    airs = []
+    dx = [1, 0, -1, 0]
+    dy = [0, 1, 0, -1]
+
+    # 시작점 찾기
+    for i in range(r):
+        tmp = list(map(int, input().split()))
+        for j in range(c):
+            if tmp[j] == -1:
+                airs.append((i, j))
+        field.append(tmp)
+
+    time = 0
+    while time < t:
+        n_field = copy.deepcopy(field)
+        for i in range(r):
+            for j in range(c):
+                if field[i][j] != -1 and field[i][j] != 0:
+                    cnt = 0
+                    for k in range(4):
+                        nx, ny = i + dx[k], j + dy[k]
+                        if 0 <= nx < r and 0 <= ny < c and field[nx][ny] != -1:
+                            cnt += 1
+                            n_field[nx][ny] += field[i][j] // 5
+                    n_field[i][j] -= cnt * (field[i][j] // 5)
+
+        n_field = wind(n_field, airs)
+        field = n_field
+        time += 1
+
+    ans = 0
+    for cc in field:
+        ans += sum(cc)
+
+    print(ans + 2)
+
 ```
