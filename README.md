@@ -1,4 +1,4 @@
-## BOJ with Python
+## Algorithm with Python
 
 ## Solved.ac
-ID: qhdrmfdl123
+[![Solved.ac Profile](http://mazassumnida.wtf/api/generate_badge?boj=qhdrmfdl12)](https://solved.ac/qhdrmfdl12)
