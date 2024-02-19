@@ -1,6 +1,6 @@
 ##  Leetcode week1-3
 
-### https://leetcode.com/problems/merge-two-sorted-lists/
+### https://leetcode.com/problems/merge-two-sorted-lists/description/
 ### Algorithm: Linked List
 
 
@@ -26,5 +26,3 @@ class Solution:
         return dummy.next
 
 ```
-
-

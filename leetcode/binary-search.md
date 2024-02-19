@@ -1,6 +1,6 @@
-##  Leetcode week1-8
+##  Leetcode week1-9
 
-### https://leetcode.com/problems/binary-search/
+### https://leetcode.com/problems/binary-search/description/
 ### Algorithm: Binary Search
 
 
@@ -19,5 +19,3 @@ class Solution:
 
         return -1
 ```
-
-
