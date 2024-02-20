@@ -1,4 +1,4 @@
-##  Leetcode week1-9
+##  Leetcode week1-8
 
 ### https://leetcode.com/problems/binary-search/description/
 ### Algorithm: Binary Search

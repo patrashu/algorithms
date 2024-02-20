@@ -1,21 +1,17 @@
-##  Leetcode week1-10
+##  Leetcode week2-4
 
-### https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/
-### Algorithm: Linked List, Tree
+### https://leetcode.com/problems/longest-palindrome/description/
+### Algorithm: Dictionary
 
+```python
+from collections import Counter
 
-``` python
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if p.val > q.val:
-            p, q = q, p
-        if p.val <= root.val <= q.val:
-            ans = root
+    def longestPalindrome(self, s: str) -> int:
+        counter = Counter(s)
+        odd_cnt = len(list(filter(lambda x: x[1]%2==1, counter.items())))
+        if odd_cnt:
+            return sum([k for k in counter.values()]) - odd_cnt + 1
         else:
-            if root.left is not None and q.val < root.val:
-                ans = self.lowestCommonAncestor(root.left, p, q)
-            elif root.right is not None and root.val < p.val:
-                ans = self.lowestCommonAncestor(root.right, p, q)
-        
-        return ans
+            return sum([k for k in counter.values()]) 
 ```
