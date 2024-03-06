@@ -1,64 +1,78 @@
-### 프로그래머스  '과제 진행하기' (레벨 2)
+### 프로그래머스  '택배 배달과 수거하기' (레벨 2)
 
-### https://school.programmers.co.kr/learn/courses/30/lessons/176962
+### https://school.programmers.co.kr/learn/courses/30/lessons/150369
 
 ### 우선순위 큐
 
 
 ```python
-from heapq import heappush, heappop
+import heapq
 
-# HH:MM => Minute
-def time2min(value):
-    tmp = value.split(':')
-    return int(tmp[0])*60 + int(tmp[1])
+def solution(cap, n, deliveries, pickups):
+    answer = 0
+    dv_q, pk_q = [], [] # 배달, 수거 큐
+    length = len(deliveries)    
+    for i in range(length):
+        if deliveries[i]:
+            heapq.heappush(dv_q, -i) # 최대 heap으로
+        if pickups[i]:
+            heapq.heappush(pk_q, -i)
+            
+    while True:
+        if not dv_q and not pk_q: # 둘다 비면 break
+            break
+        dv_cap, pk_cap = cap, cap
+        
+        # cost 처리
+        dv_max = -dv_q[0] if dv_q else 0
+        pk_max = -pk_q[0] if pk_q else 0
+        cost = max(dv_max, pk_max)
+        answer += (cost+1)*2
 
-def solution(plans):
-    answer = []
-    wait_queue = []
-    cplans = []
-    
-    for i in range(len(plans)):
-        pn, st, lt = plans[i]
-        st = time2min(st)
-        lt = int(lt)
-        
-        heappush(cplans, (st, lt, pn))
-    
-    # 최소 힙
-    while len(cplans) >= 2:
-        st, lt, pn = heappop(cplans)
-        nst, nlt, npn = heappop(cplans)
-        
-        # 종료 시간이 다음 실행시간보다 작/같 일 때
-        if st + lt <= nst:
-            answer.append(pn)
-            waste_time = nst - (st + lt)
-            
-            
-            # 시간 남으면 나머지 처리
-            while waste_time and wait_queue:
-                rst, rlt, rpn = heappop(wait_queue)
+        while dv_q:
+            cur_node = -heapq.heappop(dv_q)
+            # 여유가 없을 때 처리하고 다시 삽입
+            if deliveries[cur_node] > dv_cap:
+                deliveries[cur_node] -= dv_cap
+                heapq.heappush(dv_q, -cur_node)
+                # dv_cap = 0
+                break
+            # 여유있으면 반복 진행
+            else:
+                dv_cap -= deliveries[cur_node]
+                deliveries[cur_node] = 0
                 
-                if rlt <= waste_time:
-                    answer.append(rpn)
-                    waste_time -= rlt
-                else:
-                    heappush(wait_queue, (rst, (rlt-waste_time), rpn))
-                    waste_time = 0
-                
-        # 종료 시간이 다음 실행시간보다 클 때
-        else:
-            heappush(wait_queue, (-st, lt-(nst-st), pn))
+                while dv_cap and dv_q:
+                    cur_node = -heapq.heappop(dv_q)
+                    if deliveries[cur_node] > dv_cap:
+                        deliveries[cur_node] -= dv_cap
+                        heapq.heappush(dv_q, -cur_node)
+                        dv_cap = 0
+                    else:
+                        dv_cap -= deliveries[cur_node]
+                        deliveries[cur_node] = 0
             
-        heappush(cplans, (nst, nlt, npn))
-        
-    last = heappop(cplans)
-    answer.append(last[2])
-    
-    while wait_queue:
-        remain = heappop(wait_queue)
-        answer.append(remain[2])
-        
+        while pk_q:
+            cur_node = -heapq.heappop(pk_q)
+            # 여유가 없을 때 처리하고 다시 삽입
+            if pickups[cur_node] > pk_cap:
+                pickups[cur_node] -= pk_cap
+                heapq.heappush(pk_q, -cur_node)
+                break
+            # 여유있으면 반복 진행
+            else:
+                pk_cap -= pickups[cur_node]
+                pickups[cur_node] = 0
+                
+                while pk_cap and pk_q:
+                    cur_node = -heapq.heappop(pk_q)
+                    if pickups[cur_node] > pk_cap:
+                        pickups[cur_node] -= pk_cap
+                        heapq.heappush(pk_q, -cur_node)
+                        pk_cap = 0
+                    else:
+                        pk_cap -= pickups[cur_node]
+                        pickups[cur_node] = 0
+
     return answer
 ```    

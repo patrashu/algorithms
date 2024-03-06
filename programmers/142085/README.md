@@ -6,19 +6,37 @@
 
 
 ```python
-from heapq import heappop, heappush
+import heapq
 
 def solution(n, k, enemy):
-    answer, sumEnemy = 0, 0
-    heap = []
-    
-    for e in enemy:
-        heappush(heap, -e)
-        sumEnemy += e
-        if sumEnemy > n:
-            if k == 0: break
-            sumEnemy += heappop(heap) 
+    answer = 0
+    q = []
+    length = len(enemy)
+    for i in range(length):
+        if k:
+            heapq.heappush(q, enemy[i])
             k -= 1
-        answer += 1
+            answer += 1
+            continue
+        
+        # 교체 가능할 때 
+        root_node = heapq.heappop(q)
+        if root_node < enemy[i]:
+            heapq.heappush(q, enemy[i])
+            if n - root_node < 0:
+                break
+            n -= root_node
+            answer += 1
+            
+        # 불가능할 때
+        else:
+            heapq.heappush(q, root_node)
+            if n - enemy[i] < 0:
+                break
+            n -= enemy[i]
+            answer += 1
+        
+    
     return answer
+
 ```    
