@@ -9,23 +9,23 @@ from itertools import combinations
 from collections import defaultdict
 
 def solution(orders, course):
-    res = []
-    for num in course:
+    answer = []
+    for com in course:
         store = defaultdict(int)
         for order in orders:
-            candidates = combinations(order, num)
-
-            for candidate in candidates:
-                tmp = ''.join(sorted(candidate))
+            candits = combinations(order, com)
+            
+            for candit in candits:
+                tmp = ''.join(sorted(candit))
                 store[tmp] += 1
-
+    
         store = sorted(store.items(), key=lambda x: -x[1])
         max_num = 0
 
         for menu, common in store:
             if common >= max_num and common != 1:
                 max_num = common
-                res.append(menu)
+                answer.append(menu)
 
-    return sorted(res)
+    return sorted(answer)
 ```
