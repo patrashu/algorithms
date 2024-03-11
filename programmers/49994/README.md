@@ -1,4 +1,4 @@
-### 프로그래머스 49994번
+### 프로그래머스 방문 길이 (level2)
 
 ### https://school.programmers.co.kr/learn/courses/30/lessons/49994
 
