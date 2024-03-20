@@ -1,1 +1,1 @@
-## Algorithm with Python
+## Algorithm solving with Python
